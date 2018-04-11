@@ -62,11 +62,21 @@ function google_optimize_hide_page_enabled() {
  * @return array
  */
 function google_optimize_hide_page_container_ids() {
+  static $ids;
+
+  if (!is_null($ids)) {
+    return $ids;
+  }
+
   $csv = variable_get('google_optimize_hide_page_container_ids', '');
   if (empty($csv)) {
-    return '';
+    $ids = array();
   }
-  return str_getcsv($csv);
+  else {
+    $ids = str_getcsv($csv);
+  }
+
+  return $ids;
 }
 
 /**
@@ -90,26 +100,40 @@ function google_optimize_hide_page_class_name() {
 }
 
 /**
- * Implements hook_page_alter() to insert JavaScript to the appropriate scope/region of the page.
+ * Whether to put the snippet on the page.
+ *
+ * @return bool
  */
-function google_optimize_hide_page_page_alter(&$page) {
+function google_optimize_hide_page_active() {
   if (!google_optimize_hide_page_enabled()) {
     // Not enabled so do nothing.
-    return;
+    return FALSE;
   }
 
   if (path_is_admin(current_path())) {
     // Not on admin pages.
-    return;
+    return FALSE;
   }
 
   $container_ids = google_optimize_hide_page_container_ids();
   if (empty($container_ids)) {
     // No container configured, so do nothing.
+    return FALSE;
+  }
+
+  return TRUE;
+}
+
+/**
+ * Implements hook_page_alter() to insert JavaScript to the appropriate scope/region of the page.
+ */
+function google_optimize_hide_page_page_alter(&$page) {
+  if (!google_optimize_hide_page_active()) {
     return;
   }
 
   // Create the container string 'GTM-XXXXXX':true,'GTM-YYYYYY':true
+  $container_ids = google_optimize_hide_page_container_ids();
   $container_ids = array_map(
     function($value) {
       return "'" . trim($value) . "':true";
@@ -144,5 +168,4 @@ h.end=i=function(){s.className=s.className.replace(RegExp(' ?'+y),'')};
     'scope' => 'header',
     'weight' => -10,
   ));
-
 }

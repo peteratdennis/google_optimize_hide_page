@@ -24,14 +24,10 @@ function google_optimize_hide_page_admin_settings_form($form_state) {
     '#title' => t('Settings for the Google Optimize page-hiding snippet'),
   );
 
-  $container_ids = google_optimize_hide_page_container_ids();
-  if (!empty($container_ids)) {
-    join(',' , $container_ids);
-  }
   $form['settings']['google_optimize_hide_page_container_ids'] = array(
     '#title' => t('Container Ids (GTM-XXXXXX), separated by commas'),
     '#type' => 'textfield',
-    '#default_value' => $container_ids,
+    '#default_value' => join(',' , google_optimize_hide_page_container_ids()),
     '#description' => t('A list Optimize container IDs separated by commas'),
     '#maxlength' => 500,
   );
