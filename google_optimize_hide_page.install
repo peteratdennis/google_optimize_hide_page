@@ -1,0 +1,14 @@
+<?php
+/**
+ * @file google_optimize_hide_page.install
+ */
+
+/**
+ * Implements hook_uninstall().
+ */
+function google_optimize_hide_page_uninstall() {
+  variable_del('google_optimize_hide_page_enable');
+  variable_del('google_optimize_hide_page_container_ids');
+  variable_del('google_optimize_hide_page_timeout');
+  variable_del('google_optimize_hide_page_class_name');
+}
