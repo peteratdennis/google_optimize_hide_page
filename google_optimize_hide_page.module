@@ -62,7 +62,10 @@ function google_optimize_hide_page_enabled() {
  * @return array
  */
 function google_optimize_hide_page_container_ids() {
-  $csv = variable_get('google_optimize_hide_page_container_ids', 'GTM-XXXXXX');
+  $csv = variable_get('google_optimize_hide_page_container_ids', '');
+  if (empty($csv)) {
+    return '';
+  }
   return str_getcsv($csv);
 }
 
@@ -100,8 +103,13 @@ function google_optimize_hide_page_page_alter(&$page) {
     return;
   }
 
-  // Create the container string 'GTM-XXXXXX':true,'GTM-YYYYYY':true
   $container_ids = google_optimize_hide_page_container_ids();
+  if (empty($container_ids)) {
+    // No container configured, so do nothing.
+    return;
+  }
+
+  // Create the container string 'GTM-XXXXXX':true,'GTM-YYYYYY':true
   $container_ids = array_map(
     function($value) {
       return "'" . trim($value) . "':true";
