@@ -1,6 +1,7 @@
 <?php
 /**
- * @file google_optimize_hide_page.module
+ * @file
+ * google_optimize_hide_page.module
  */
 
 /**
@@ -27,9 +28,9 @@ function google_optimize_hide_page_help($path, $arg) {
   switch ($path) {
     case 'admin/config/system/google_optimize_hide_page':
       return t(
-        'The <a href="@opt_url">Optimize page-hiding snippet</a> supports loading 
-your Optimize container asynchronously while hiding the page until the container is ready, 
-ensuring that users don\'t see the initial page content prior to it being modified by an experiment.',
+        'The <a href="@opt_url">Optimize page-hiding snippet</a> supports loading
+ your Optimize container asynchronously while hiding the page until the container is ready,
+ ensuring that users don\'t see the initial page content prior to it being modified by an experiment.',
         array('@opt_url' => 'https://developers.google.com/optimize/#the_page-hiding_snippet_code')
       );
   }

@@ -1,6 +1,7 @@
 <?php
 /**
- * @file google_optimize_hide_page.install
+ * @file
+ * google_optimize_hide_page.install
  */
 
 /**
